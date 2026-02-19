@@ -28,14 +28,9 @@ type FavoriteFilter = "all" | "favorites";
 
 const ITEMS_PER_PAGE = 4;
 
-/* ─────────────────────────────────────────────────────────
-   Dashboard — state-only orchestrator.
-   All rendering is delegated to extracted components.
-───────────────────────────────────────────────────────── */
 export default function Dashboard() {
   const router = useRouter();
 
-  /* ── State ── */
   const [user,           setUser]           = useState<User | null>(null);
   const [bookmarks,      setBookmarks]      = useState<Bookmark[]>([]);
   const [loading,        setLoading]        = useState(true);
@@ -44,7 +39,6 @@ export default function Dashboard() {
   const [favoriteFilter, setFavoriteFilter] = useState<FavoriteFilter>("all");
   const [visibleCount,   setVisibleCount]   = useState(ITEMS_PER_PAGE);
 
-  /* ── Auth + initial load ── */
   useEffect(() => {
     (async () => {
       const u = await getCurrentUser();
@@ -55,7 +49,6 @@ export default function Dashboard() {
     })();
   }, [router]);
 
-  /* ── Realtime ── */
   useEffect(() => {
     if (!user) return;
     const ch = subscribeToBookmarks(user.id, {
@@ -69,7 +62,6 @@ export default function Dashboard() {
   /* ── Reset pagination on filter / search change ── */
   useEffect(() => { setVisibleCount(ITEMS_PER_PAGE); }, [searchQuery, favoriteFilter]);
 
-  /* ── Handlers ── */
   const handleAdd = useCallback(async (title: string, url: string) => {
     const res = await addBookmark({ title, url });
     if (res) { toast.success("Bookmark added!"); setModalOpen(false); }
@@ -131,10 +123,8 @@ export default function Dashboard() {
   const displayName =
     user?.user_metadata?.full_name || user?.email?.split("@")[0] || "there";
 
-  /* ── Loading / auth guard ── */
   if (loading || !user) return <LoadingSpinner message="Loading your bookmarks…" />;
 
-  /* ── Render ── */
   return (
     <motion.div
       style={{ minHeight: "100vh", background: "#f8fdf9" }}

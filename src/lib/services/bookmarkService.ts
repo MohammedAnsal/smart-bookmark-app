@@ -31,7 +31,7 @@ export async function getBookmarks(): Promise<Bookmark[]> {
 export async function addBookmark(
   bookmark: Pick<Bookmark, "title" | "url">,
 ): Promise<Bookmark | null> {
-  // Server-side URL guard
+
   if (!isValidUrl(bookmark.url)) {
     console.error("Invalid URL rejected by service layer:", bookmark.url);
     return null;
@@ -69,7 +69,6 @@ export async function updateBookmark(
   id: string,
   updates: Pick<Bookmark, "title" | "url">
 ): Promise<Bookmark | null> {
-  // Server-side URL guard
   if (!isValidUrl(updates.url)) {
     console.error("Invalid URL rejected by service layer:", updates.url);
     return null;
