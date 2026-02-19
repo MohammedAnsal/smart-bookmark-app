@@ -1,6 +1,5 @@
 "use client";
 
-// app/page.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -42,20 +41,14 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      {/* Fixed navigation */}
       <Navbar />
 
-      {/*
-        Split grid layout — full viewport height
-        Left: copy / CTA   |   Right: app mockup
-        Collapses to single column on mobile
-      */}
       <main
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           minHeight: "100vh",
-          paddingTop: 74, // nav height offset
+          paddingTop: 74,
         }}
         className="
           grid
